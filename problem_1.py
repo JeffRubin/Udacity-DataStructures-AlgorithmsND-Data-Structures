@@ -9,11 +9,15 @@ class DoublyLinkedList:
         self.head = None
         self.tail = None
 
+MAX_CACHE_CAPACITY = 1000
 class LRU_Cache(object):
     def __init__(self, capacity):
         # Initialize class variables
         if capacity <= 0:
-            raise ValueError('Cache capacity must be > 0')
+            raise ValueError('Error: Cache capacity must be > 0')
+
+        if capacity > MAX_CACHE_CAPACITY:
+            raise ValueError(f'Error: Cache capacity must be <= {MAX_CACHE_CAPACITY} to prevent excessive cache memory usage')
 
         self.capacity = capacity
         self.cache = dict()
@@ -198,3 +202,33 @@ print(tc5_cache.get(3))
 # Expected Output: 3 since should have been unaffected by the overwrite of 10 and removal of the least recently used entry (2)
 print(tc5_cache.get(4))
 # Expected Output: 4 because this replaced 10 when the cache reached its capacity
+print('----------')
+
+##########
+# Test Case 6: Cache Capacity Is 0
+print('Test Case 6')
+try:
+    tc6_cache = LRU_Cache(0)
+except ValueError as tc6_err:
+    print(tc6_err)
+# Expected Output: Error: Cache capacity must be > 0
+print('----------')
+
+##########
+# Test Case 7: Cache Capacity Is Negative
+print('Test Case 7')
+try:
+    tc7_cache = LRU_Cache(-42)
+except ValueError as tc7_err:
+    print(tc7_err)
+# Expected Output: Error: Cache capacity must be > 0
+print('----------')
+
+##########
+# Test Case 8: Cache Capacity Is Too Large
+print('Test Case 8')
+try:
+    tc8_cache = LRU_Cache(1e6)
+except ValueError as tc8_err:
+    print(tc8_err)
+# Expected Output: Error: Cache capacity must be <= 1000 to prevent excessive cache memory usage
